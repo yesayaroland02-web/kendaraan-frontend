@@ -14,26 +14,23 @@
 
 <h3>Edit Data Kendaraan</h3>
 
-<div id="status"></div>
-
 <form id="formEdit">
 
-    <input id="noRegistrasi" class="form-control mb-2" readonly>
-    <input id="namaPemilik" class="form-control mb-2" placeholder="Nama Pemilik">
-    <input id="alamat" class="form-control mb-2" placeholder="Alamat">
-    <input id="merkKendaraan" class="form-control mb-2" placeholder="Merk">
-    <input id="tahunPembuatan" class="form-control mb-2" placeholder="Tahun">
-    <input id="kapasitasSilinder" class="form-control mb-2" placeholder="Silinder">
-    <input id="warnaKendaraan" class="form-control mb-2" placeholder="Warna">
+<input id="noRegistrasi" class="form-control mb-2" readonly>
+<input id="namaPemilik" class="form-control mb-2">
+<input id="alamat" class="form-control mb-2">
+<input id="merkKendaraan" class="form-control mb-2">
+<input id="tahunPembuatan" class="form-control mb-2">
+<input id="kapasitasSilinder" class="form-control mb-2">
+<input id="warnaKendaraan" class="form-control mb-2">
 
-    <select id="bahanBakar" class="form-control mb-3">
-        <option>Bensin</option>
-        <option>Solar</option>
-        <option>Listrik</option>
-    </select>
+<select id="bahanBakar" class="form-control mb-3">
+    <option>Bensin</option>
+    <option>Solar</option>
+    <option>Listrik</option>
+</select>
 
-    <button class="btn btn-success">Update</button>
-    <a href="index.html" class="btn btn-secondary">Kembali</a>
+<button class="btn btn-success">Update</button>
 
 </form>
 
@@ -44,44 +41,24 @@
 const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
 const id = new URLSearchParams(window.location.search).get("id");
 
-// ======================
-// VALIDASI ID
-// ======================
 if(!id){
     alert("ID tidak ditemukan");
     window.location.href = "index.html";
 }
 
-// ======================
-// LOAD DATA
-// ======================
-function loadData(){
+$.get(baseUrl + "/" + id, function(d){
 
-    $.get(baseUrl + "/" + id, function(d){
+    $("#noRegistrasi").val(d.noRegistrasi);
+    $("#namaPemilik").val(d.namaPemilik);
+    $("#alamat").val(d.alamat);
+    $("#merkKendaraan").val(d.merkKendaraan);
+    $("#tahunPembuatan").val(d.tahunPembuatan);
+    $("#kapasitasSilinder").val(d.kapasitasSilinder);
+    $("#warnaKendaraan").val(d.warnaKendaraan);
+    $("#bahanBakar").val(d.bahanBakar);
 
-        if(!d){
-            $("#status").html("<div class='text-danger'>Data tidak ditemukan</div>");
-            return;
-        }
+});
 
-        $("#noRegistrasi").val(d.noRegistrasi || "");
-        $("#namaPemilik").val(d.namaPemilik || "");
-        $("#alamat").val(d.alamat || "");
-        $("#merkKendaraan").val(d.merkKendaraan || "");
-        $("#tahunPembuatan").val(d.tahunPembuatan || "");
-        $("#kapasitasSilinder").val(d.kapasitasSilinder || "");
-        $("#warnaKendaraan").val(d.warnaKendaraan || "");
-        $("#bahanBakar").val(d.bahanBakar || "");
-
-    }).fail(function(err){
-        console.log(err);
-        $("#status").html("<div class='text-danger'>Gagal load data</div>");
-    });
-}
-
-// ======================
-// UPDATE DATA
-// ======================
 $("#formEdit").submit(function(e){
     e.preventDefault();
 
@@ -101,20 +78,16 @@ $("#formEdit").submit(function(e){
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify(data),
-
         success: function(){
             alert("Update berhasil");
             window.location.href = "index.html";
         },
-
-        error: function(err){
-            console.log(err);
-            alert("Gagal update data");
+        error: function(){
+            alert("Gagal update");
         }
     });
-});
 
-loadData();
+});
 
 </script>
 
