@@ -3,17 +3,54 @@
 <head>
     <title>Edit Kendaraan</title>
 
-    <!-- jQuery WAJIB -->
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+            background: #2d6cdf;
+            color: white;
+            border: none;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
+<h2>Edit Kendaraan</h2>
+
+<div id="status"></div>
+
 <form id="formEdit">
-    <input id="noRegistrasi">
-    <input id="namaPemilik">
-    <input id="alamat">
-    <input id="merkKendaraan">
+    <input id="noRegistrasi" placeholder="No Registrasi">
+    <input id="namaPemilik" placeholder="Nama Pemilik">
+    <input id="alamat" placeholder="Alamat">
+    <input id="merkKendaraan" placeholder="Merk Kendaraan">
+
     <button type="submit">Simpan</button>
 </form>
 
@@ -24,15 +61,59 @@ $(document).ready(function () {
     const id = new URLSearchParams(window.location.search).get("id");
 
     if (!id) {
-        alert("ID tidak ditemukan di URL");
+        $("#status").html("<div class='error'>ID tidak ditemukan di URL</div>");
         return;
     }
 
+    // ======================
+    // LOAD DATA
+    // ======================
     $.get(baseUrl + "/" + id, function (data) {
+
+        if (!data) {
+            $("#status").html("<div class='error'>Data tidak ditemukan</div>");
+            return;
+        }
+
         $("#noRegistrasi").val(data.noRegistrasi);
         $("#namaPemilik").val(data.namaPemilik);
         $("#alamat").val(data.alamat);
         $("#merkKendaraan").val(data.merkKendaraan);
+
+        $("#status").html("");
+
+    }).fail(function (err) {
+        console.log(err);
+        $("#status").html("<div class='error'>Gagal mengambil data dari server</div>");
+    });
+
+    // ======================
+    // UPDATE DATA
+    // ======================
+    $("#formEdit").submit(function (e) {
+        e.preventDefault();
+
+        let data = {
+            noRegistrasi: $("#noRegistrasi").val(),
+            namaPemilik: $("#namaPemilik").val(),
+            alamat: $("#alamat").val(),
+            merkKendaraan: $("#merkKendaraan").val()
+        };
+
+        $.ajax({
+            url: baseUrl + "/" + id,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function () {
+                alert("Update berhasil");
+                window.location.href = "index.html";
+            },
+            error: function (err) {
+                console.log(err);
+                alert("Update gagal");
+            }
+        });
     });
 
 });
