@@ -1,69 +1,42 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Kendaraan</title>
 
+    <!-- jQuery WAJIB -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+<form id="formEdit">
+    <input id="noRegistrasi">
+    <input id="namaPemilik">
+    <input id="alamat">
+    <input id="merkKendaraan">
+    <button type="submit">Simpan</button>
+</form>
+
+<script>
 $(document).ready(function () {
 
     const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
     const id = new URLSearchParams(window.location.search).get("id");
 
-    // 🚨 cek id
     if (!id) {
         alert("ID tidak ditemukan di URL");
         return;
     }
 
-    // ======================
-    // GET DATA (LOAD FORM)
-    // ======================
     $.get(baseUrl + "/" + id, function (data) {
-
         $("#noRegistrasi").val(data.noRegistrasi);
         $("#namaPemilik").val(data.namaPemilik);
         $("#alamat").val(data.alamat);
         $("#merkKendaraan").val(data.merkKendaraan);
-        $("#tahunPembuatan").val(data.tahunPembuatan);
-        $("#kapasitasSilinder").val(data.kapasitasSilinder);
-        $("#warnaKendaraan").val(data.warnaKendaraan);
-        $("#bahanBakar").val(data.bahanBakar);
-
-    }).fail(function (err) {
-        console.log(err);
-        alert("Gagal mengambil data dari backend");
-    });
-
-    // ======================
-    // UPDATE DATA
-    // ======================
-    $("#formEdit").submit(function (e) {
-        e.preventDefault();
-
-        let data = {
-            noRegistrasi: $("#noRegistrasi").val(),
-            namaPemilik: $("#namaPemilik").val(),
-            alamat: $("#alamat").val(),
-            merkKendaraan: $("#merkKendaraan").val(),
-            tahunPembuatan: $("#tahunPembuatan").val(),
-            kapasitasSilinder: $("#kapasitasSilinder").val(),
-            warnaKendaraan: $("#warnaKendaraan").val(),
-            bahanBakar: $("#bahanBakar").val()
-        };
-
-        $.ajax({
-            url: baseUrl + "/" + id,
-            type: "PUT",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function () {
-                alert("Update berhasil");
-                window.location = "index.html";
-            },
-            error: function (err) {
-                console.log(err);
-                alert("Update gagal");
-            }
-        });
-
     });
 
 });
-
 </script>
+
+</body>
+</html>
