@@ -16,13 +16,10 @@
 
 <div class="row mb-3">
     <div class="col-md-6">
-        <input type="text" id="searchNo" class="form-control"
-               placeholder="Cari No Registrasi">
+        <input type="text" id="searchNo" class="form-control" placeholder="Cari No Registrasi">
     </div>
-
     <div class="col-md-6">
-        <input type="text" id="searchNama" class="form-control"
-               placeholder="Cari Nama Pemilik">
+        <input type="text" id="searchNama" class="form-control" placeholder="Cari Nama Pemilik">
     </div>
 </div>
 
@@ -51,37 +48,29 @@ const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendara
 let semuaData = [];
 
 function loadData(){
-
     $.get(baseUrl, function(res){
-
         semuaData = res;
-        tampilkan(res);
-
-    }).fail(function(err){
-        console.log(err);
-        alert("Gagal load data");
+        render(res);
     });
 }
 
-function tampilkan(data){
+function render(data){
 
     let html = "";
 
     data.forEach(k => {
 
-        if(!k._id) return;
-
         html += `
         <tr>
-            <td>${k.noRegistrasi || '-'}</td>
-            <td>${k.namaPemilik || '-'}</td>
-            <td>${k.merkKendaraan || '-'}</td>
-            <td>${k.tahunPembuatan || '-'}</td>
+            <td>${k.noRegistrasi}</td>
+            <td>${k.namaPemilik}</td>
+            <td>${k.merkKendaraan}</td>
+            <td>${k.tahunPembuatan}</td>
 
             <td>
-                <a href="detail.html?id=${k._id}" class="btn btn-info btn-sm">Detail</a>
-                <a href="edit.html?id=${k._id}" class="btn btn-warning btn-sm">Edit</a>
-                <button onclick="hapus('${k._id}')" class="btn btn-danger btn-sm">Hapus</button>
+                <a href="detail.html?id=${k.noRegistrasi}" class="btn btn-info btn-sm">Detail</a>
+                <a href="edit.html?id=${k.noRegistrasi}" class="btn btn-warning btn-sm">Edit</a>
+                <button onclick="hapus('${k.noRegistrasi}')" class="btn btn-danger btn-sm">Hapus</button>
             </td>
         </tr>
         `;
@@ -90,31 +79,24 @@ function tampilkan(data){
     $("#dataBody").html(html);
 }
 
-// =====================
-// SEARCH (FIXED)
-// =====================
+// SEARCH
 $("#searchNo, #searchNama").on("input", function(){
 
     let no = $("#searchNo").val().toLowerCase();
     let nama = $("#searchNama").val().toLowerCase();
 
-    let hasil = semuaData.filter(x => {
+    let hasil = semuaData.filter(x =>
+        (x.noRegistrasi || "").toLowerCase().includes(no) &&
+        (x.namaPemilik || "").toLowerCase().includes(nama)
+    );
 
-        let noReg = (x.noRegistrasi || "").toLowerCase();
-        let namaPemilik = (x.namaPemilik || "").toLowerCase();
-
-        return noReg.includes(no) && namaPemilik.includes(nama);
-    });
-
-    tampilkan(hasil);
+    render(hasil);
 });
 
-// =====================
 // DELETE
-// =====================
 function hapus(id){
 
-    if(!confirm("Yakin hapus data ini?")) return;
+    if(!confirm("Yakin hapus?")) return;
 
     $.ajax({
         url: baseUrl + "/" + id,
@@ -122,9 +104,8 @@ function hapus(id){
         success: function(){
             loadData();
         },
-        error: function(err){
-            console.log(err);
-            alert("Gagal hapus data");
+        error: function(){
+            alert("Gagal hapus");
         }
     });
 }
