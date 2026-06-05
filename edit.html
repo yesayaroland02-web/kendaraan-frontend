@@ -101,7 +101,7 @@ const id = new URLSearchParams(window.location.search).get("id");
 $(document).ready(function(){
 
     $.get(
-        "http://localhost:8080/api/kendaraan/" + id,
+        "https://kendaraan-backend-production.up.railway.app/api/kendaraan" + id,
         function(data){
 
             $("#noRegistrasi").val(data.noRegistrasi);
