@@ -1,91 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-
-<title>Tambah Kendaraan</title>
-
+<title>Tambah</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
 </head>
 
 <body>
 
 <div class="container mt-4">
 
-<h3>Tambah Data Kendaraan</h3>
+<h3>Tambah Kendaraan</h3>
 
-<form id="formKendaraan">
+<form id="form">
 
-<div class="mb-2">
-<label>No Registrasi</label>
-<input type="text" id="noRegistrasi"
-class="form-control" required>
-</div>
+<input class="form-control mb-2" id="noRegistrasi" placeholder="No Registrasi">
+<input class="form-control mb-2" id="namaPemilik" placeholder="Nama">
+<input class="form-control mb-2" id="alamat" placeholder="Alamat">
+<input class="form-control mb-2" id="merkKendaraan" placeholder="Merk">
+<input class="form-control mb-2" id="tahunPembuatan" placeholder="Tahun">
+<input class="form-control mb-2" id="kapasitasSilinder" placeholder="Silinder">
+<input class="form-control mb-2" id="warnaKendaraan" placeholder="Warna">
 
-<div class="mb-2">
-<label>Nama Pemilik</label>
-<input type="text" id="namaPemilik"
-class="form-control" required>
-</div>
-
-<div class="mb-2">
-<label>Alamat</label>
-<textarea id="alamat"
-class="form-control"></textarea>
-</div>
-
-<div class="mb-2">
-<label>Merk Kendaraan</label>
-<input type="text" id="merkKendaraan"
-class="form-control">
-</div>
-
-<div class="mb-2">
-<label>Tahun Pembuatan</label>
-<input type="number"
-id="tahunPembuatan"
-class="form-control">
-</div>
-
-<div class="mb-2">
-<label>Kapasitas Silinder</label>
-<input type="number"
-id="kapasitasSilinder"
-class="form-control">
-</div>
-
-<div class="mb-2">
-<label>Warna Kendaraan</label>
-<input type="text"
-id="warnaKendaraan"
-class="form-control">
-</div>
-
-<div class="mb-3">
-<label>Bahan Bakar</label>
-
-<select id="bahanBakar"
-class="form-control">
-
+<select class="form-control mb-2" id="bahanBakar">
 <option>Bensin</option>
 <option>Solar</option>
 <option>Listrik</option>
-
 </select>
 
-</div>
-
-<button class="btn btn-success">
-Simpan
-</button>
-
-<a href="index.html"
-class="btn btn-secondary">
-Kembali
-</a>
+<button class="btn btn-success">Simpan</button>
 
 </form>
 
@@ -93,37 +36,31 @@ Kembali
 
 <script>
 
-$("#formKendaraan").submit(function(e){
+const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
 
+$("#form").submit(function(e){
 e.preventDefault();
 
-let data={
-
-noRegistrasi:$("#noRegistrasi").val(),
-namaPemilik:$("#namaPemilik").val(),
-alamat:$("#alamat").val(),
-merkKendaraan:$("#merkKendaraan").val(),
-tahunPembuatan:$("#tahunPembuatan").val(),
-kapasitasSilinder:$("#kapasitasSilinder").val(),
-warnaKendaraan:$("#warnaKendaraan").val(),
-bahanBakar:$("#bahanBakar").val()
-
+let data = {
+noRegistrasi: $("#noRegistrasi").val(),
+namaPemilik: $("#namaPemilik").val(),
+alamat: $("#alamat").val(),
+merkKendaraan: $("#merkKendaraan").val(),
+tahunPembuatan: $("#tahunPembuatan").val(),
+kapasitasSilinder: $("#kapasitasSilinder").val(),
+warnaKendaraan: $("#warnaKendaraan").val(),
+bahanBakar: $("#bahanBakar").val()
 };
 
 $.ajax({
-
-url:"https://kendaraan-backend-production.up.railway.app/api/kendaraan",
-type:"POST",
-contentType:"application/json",
-data:JSON.stringify(data),
-
-success:function(){
-
-alert("Data berhasil disimpan");
-window.location="index.html";
-
+url: baseUrl,
+type: "POST",
+contentType: "application/json",
+data: JSON.stringify(data),
+success: function(){
+alert("Berhasil");
+window.location = "index.html";
 }
-
 });
 
 });
