@@ -14,11 +14,11 @@
 
 <h3>Detail Kendaraan</h3>
 
-<div id="status" class="mb-3 text-danger"></div>
+<div id="status"></div>
 
 <table class="table table-bordered">
-<tr><td>No Registrasi</td><td id="no"></td></tr>
-<tr><td>Nama Pemilik</td><td id="nama"></td></tr>
+<tr><td>No</td><td id="no"></td></tr>
+<tr><td>Nama</td><td id="nama"></td></tr>
 <tr><td>Alamat</td><td id="alamat"></td></tr>
 <tr><td>Merk</td><td id="merk"></td></tr>
 <tr><td>Tahun</td><td id="tahun"></td></tr>
@@ -36,42 +36,25 @@
 const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
 const id = new URLSearchParams(window.location.search).get("id");
 
-// =====================
-// VALIDASI ID
-// =====================
 if(!id){
     alert("ID tidak ditemukan");
     window.location.href = "index.html";
 }
 
-// =====================
-// LOAD DATA
-// =====================
-function loadDetail(){
+$.get(baseUrl + "/" + id, function(d){
 
-    $.get(baseUrl + "/" + id, function(d){
+    $("#no").text(d.noRegistrasi);
+    $("#nama").text(d.namaPemilik);
+    $("#alamat").text(d.alamat);
+    $("#merk").text(d.merkKendaraan);
+    $("#tahun").text(d.tahunPembuatan);
+    $("#silinder").text(d.kapasitasSilinder);
+    $("#warna").text(d.warnaKendaraan);
+    $("#bbm").text(d.bahanBakar);
 
-        if(!d){
-            $("#status").text("Data tidak ditemukan");
-            return;
-        }
-
-        $("#no").text(d.noRegistrasi || "-");
-        $("#nama").text(d.namaPemilik || "-");
-        $("#alamat").text(d.alamat || "-");
-        $("#merk").text(d.merkKendaraan || "-");
-        $("#tahun").text(d.tahunPembuatan || "-");
-        $("#silinder").text(d.kapasitasSilinder || "-");
-        $("#warna").text(d.warnaKendaraan || "-");
-        $("#bbm").text(d.bahanBakar || "-");
-
-    }).fail(function(err){
-        console.log(err);
-        $("#status").text("Gagal load data dari server");
-    });
-}
-
-loadDetail();
+}).fail(function(){
+    $("#status").text("Data tidak ditemukan");
+});
 
 </script>
 
