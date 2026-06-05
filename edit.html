@@ -1,63 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Edit Kendaraan</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<style>
-body { font-family: Arial; padding: 20px; }
-form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; }
-input { padding: 8px; }
-button { padding: 10px; background: blue; color: white; border: none; }
-.error { color: red; }
-</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
 
-<h2>Edit Kendaraan</h2>
+<div class="container mt-4">
+
+<h3>Edit Data Kendaraan</h3>
+
 <div id="status"></div>
 
 <form id="formEdit">
-    <input id="noRegistrasi" placeholder="No Registrasi">
-    <input id="namaPemilik" placeholder="Nama Pemilik">
-    <input id="alamat" placeholder="Alamat">
-    <input id="merkKendaraan" placeholder="Merk Kendaraan">
-    <input id="tahunPembuatan" placeholder="Tahun">
-    <input id="kapasitasSilinder" placeholder="Silinder">
-    <input id="warnaKendaraan" placeholder="Warna">
-    <input id="bahanBakar" placeholder="Bahan Bakar">
 
-    <button type="submit">Simpan</button>
+    <input id="noRegistrasi" class="form-control mb-2" readonly>
+    <input id="namaPemilik" class="form-control mb-2" placeholder="Nama Pemilik">
+    <input id="alamat" class="form-control mb-2" placeholder="Alamat">
+    <input id="merkKendaraan" class="form-control mb-2" placeholder="Merk">
+    <input id="tahunPembuatan" class="form-control mb-2" placeholder="Tahun">
+    <input id="kapasitasSilinder" class="form-control mb-2" placeholder="Silinder">
+    <input id="warnaKendaraan" class="form-control mb-2" placeholder="Warna">
+
+    <select id="bahanBakar" class="form-control mb-3">
+        <option>Bensin</option>
+        <option>Solar</option>
+        <option>Listrik</option>
+    </select>
+
+    <button class="btn btn-success">Update</button>
+    <a href="index.html" class="btn btn-secondary">Kembali</a>
+
 </form>
+
+</div>
 
 <script>
 
 const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
 const id = new URLSearchParams(window.location.search).get("id");
 
+// ======================
+// VALIDASI ID
+// ======================
 if(!id){
     alert("ID tidak ditemukan");
     window.location.href = "index.html";
 }
 
+// ======================
 // LOAD DATA
-$.get(baseUrl + "/" + id, function(d){
+// ======================
+function loadData(){
 
-    $("#noRegistrasi").val(d.noRegistrasi);
-    $("#namaPemilik").val(d.namaPemilik);
-    $("#alamat").val(d.alamat);
-    $("#merkKendaraan").val(d.merkKendaraan);
-    $("#tahunPembuatan").val(d.tahunPembuatan);
-    $("#kapasitasSilinder").val(d.kapasitasSilinder);
-    $("#warnaKendaraan").val(d.warnaKendaraan);
-    $("#bahanBakar").val(d.bahanBakar);
+    $.get(baseUrl + "/" + id, function(d){
 
-}).fail(function(){
-    $("#status").html("<div class='error'>Gagal load data</div>");
-});
+        if(!d){
+            $("#status").html("<div class='text-danger'>Data tidak ditemukan</div>");
+            return;
+        }
 
-// UPDATE
+        $("#noRegistrasi").val(d.noRegistrasi || "");
+        $("#namaPemilik").val(d.namaPemilik || "");
+        $("#alamat").val(d.alamat || "");
+        $("#merkKendaraan").val(d.merkKendaraan || "");
+        $("#tahunPembuatan").val(d.tahunPembuatan || "");
+        $("#kapasitasSilinder").val(d.kapasitasSilinder || "");
+        $("#warnaKendaraan").val(d.warnaKendaraan || "");
+        $("#bahanBakar").val(d.bahanBakar || "");
+
+    }).fail(function(err){
+        console.log(err);
+        $("#status").html("<div class='text-danger'>Gagal load data</div>");
+    });
+}
+
+// ======================
+// UPDATE DATA
+// ======================
 $("#formEdit").submit(function(e){
     e.preventDefault();
 
@@ -77,15 +101,20 @@ $("#formEdit").submit(function(e){
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify(data),
+
         success: function(){
             alert("Update berhasil");
             window.location.href = "index.html";
         },
-        error: function(){
-            alert("Update gagal");
+
+        error: function(err){
+            console.log(err);
+            alert("Gagal update data");
         }
     });
 });
+
+loadData();
 
 </script>
 
