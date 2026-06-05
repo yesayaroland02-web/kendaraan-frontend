@@ -137,7 +137,7 @@ $("#formEdit").submit(function(e){
 
     $.ajax({
 
-        url: "http://localhost:8080/api/kendaraan/" + id,
+        url: "https://kendaraan-backend-production.up.railway.app/api/kendaraan" + id,
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify(data),
