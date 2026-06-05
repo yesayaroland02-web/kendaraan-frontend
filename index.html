@@ -62,18 +62,20 @@ function load(){
 }
 
 function hapus(id){
-    if(confirm("Yakin hapus data ini?")){
-        $.ajax({
-            url: baseUrl + "/" + id,
-            type: "DELETE",
-            success: function(){
-                load();
-            },
-            error: function(){
-                alert("Gagal hapus data");
-            }
-        });
-    }
+
+    if(!confirm("Yakin hapus data ini?")) return;
+
+    $.ajax({
+        url: baseUrl + "/" + id,
+        type: "DELETE",
+        success: function(){
+            load();
+        },
+        error: function(err){
+            console.log(err);
+            alert("Gagal hapus data");
+        }
+    });
 }
 
 load();
