@@ -1,47 +1,68 @@
 <script>
 
-const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
-const id = new URLSearchParams(window.location.search).get("id");
+$(document).ready(function () {
 
-// GET DATA
-$.get(baseUrl + "/" + id, function(data){
+    const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
+    const id = new URLSearchParams(window.location.search).get("id");
 
-$("#noRegistrasi").val(data.noRegistrasi);
-$("#namaPemilik").val(data.namaPemilik);
-$("#alamat").val(data.alamat);
-$("#merkKendaraan").val(data.merkKendaraan);
-$("#tahunPembuatan").val(data.tahunPembuatan);
-$("#kapasitasSilinder").val(data.kapasitasSilinder);
-$("#warnaKendaraan").val(data.warnaKendaraan);
-$("#bahanBakar").val(data.bahanBakar);
+    // 🚨 cek id
+    if (!id) {
+        alert("ID tidak ditemukan di URL");
+        return;
+    }
 
-});
+    // ======================
+    // GET DATA (LOAD FORM)
+    // ======================
+    $.get(baseUrl + "/" + id, function (data) {
 
-// UPDATE
-$("#formEdit").submit(function(e){
-e.preventDefault();
+        $("#noRegistrasi").val(data.noRegistrasi);
+        $("#namaPemilik").val(data.namaPemilik);
+        $("#alamat").val(data.alamat);
+        $("#merkKendaraan").val(data.merkKendaraan);
+        $("#tahunPembuatan").val(data.tahunPembuatan);
+        $("#kapasitasSilinder").val(data.kapasitasSilinder);
+        $("#warnaKendaraan").val(data.warnaKendaraan);
+        $("#bahanBakar").val(data.bahanBakar);
 
-let data = {
-noRegistrasi: $("#noRegistrasi").val(),
-namaPemilik: $("#namaPemilik").val(),
-alamat: $("#alamat").val(),
-merkKendaraan: $("#merkKendaraan").val(),
-tahunPembuatan: $("#tahunPembuatan").val(),
-kapasitasSilinder: $("#kapasitasSilinder").val(),
-warnaKendaraan: $("#warnaKendaraan").val(),
-bahanBakar: $("#bahanBakar").val()
-};
+    }).fail(function (err) {
+        console.log(err);
+        alert("Gagal mengambil data dari backend");
+    });
 
-$.ajax({
-url: baseUrl + "/" + id,
-type: "PUT",
-contentType: "application/json",
-data: JSON.stringify(data),
-success: function(){
-alert("Update berhasil");
-window.location = "index.html";
-}
-});
+    // ======================
+    // UPDATE DATA
+    // ======================
+    $("#formEdit").submit(function (e) {
+        e.preventDefault();
+
+        let data = {
+            noRegistrasi: $("#noRegistrasi").val(),
+            namaPemilik: $("#namaPemilik").val(),
+            alamat: $("#alamat").val(),
+            merkKendaraan: $("#merkKendaraan").val(),
+            tahunPembuatan: $("#tahunPembuatan").val(),
+            kapasitasSilinder: $("#kapasitasSilinder").val(),
+            warnaKendaraan: $("#warnaKendaraan").val(),
+            bahanBakar: $("#bahanBakar").val()
+        };
+
+        $.ajax({
+            url: baseUrl + "/" + id,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function () {
+                alert("Update berhasil");
+                window.location = "index.html";
+            },
+            error: function (err) {
+                console.log(err);
+                alert("Update gagal");
+            }
+        });
+
+    });
 
 });
 
