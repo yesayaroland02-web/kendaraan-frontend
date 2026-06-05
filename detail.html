@@ -1,19 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Detail Kendaraan</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+<h2>Detail Kendaraan</h2>
+
+<p>No: <span id="no"></span></p>
+<p>Nama: <span id="nama"></span></p>
+<p>Alamat: <span id="alamat"></span></p>
+<p>Merk: <span id="merk"></span></p>
+<p>Tahun: <span id="tahun"></span></p>
+<p>Silinder: <span id="silinder"></span></p>
+<p>Warna: <span id="warna"></span></p>
+<p>Bahan Bakar: <span id="bbm"></span></p>
+
 <script>
 
 const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
 const id = new URLSearchParams(window.location.search).get("id");
 
+if(!id){
+    alert("ID tidak ditemukan");
+    window.location.href = "index.html";
+}
+
 $.get(baseUrl + "/" + id, function(d){
 
-$("#no").text(d.noRegistrasi);
-$("#nama").text(d.namaPemilik);
-$("#alamat").text(d.alamat);
-$("#merk").text(d.merkKendaraan);
-$("#tahun").text(d.tahunPembuatan);
-$("#silinder").text(d.kapasitasSilinder);
-$("#warna").text(d.warnaKendaraan);
-$("#bbm").text(d.bahanBakar);
+    $("#no").text(d.noRegistrasi);
+    $("#nama").text(d.namaPemilik);
+    $("#alamat").text(d.alamat);
+    $("#merk").text(d.merkKendaraan);
+    $("#tahun").text(d.tahunPembuatan);
+    $("#silinder").text(d.kapasitasSilinder);
+    $("#warna").text(d.warnaKendaraan);
+    $("#bbm").text(d.bahanBakar);
 
+}).fail(function(){
+    alert("Gagal load detail");
 });
 
 </script>
+
+</body>
+</html>
