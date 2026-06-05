@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Kendaraan</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<title>Edit Kendaraan</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; }
-        input { padding: 8px; }
-        button { padding: 10px; background: blue; color: white; border: none; }
-        .error { color: red; margin-bottom: 10px; }
-    </style>
+<style>
+body { font-family: Arial; padding: 20px; }
+form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; }
+input { padding: 8px; }
+button { padding: 10px; background: blue; color: white; border: none; }
+.error { color: red; }
+</style>
 </head>
 
 <body>
@@ -23,6 +23,10 @@
     <input id="namaPemilik" placeholder="Nama Pemilik">
     <input id="alamat" placeholder="Alamat">
     <input id="merkKendaraan" placeholder="Merk Kendaraan">
+    <input id="tahunPembuatan" placeholder="Tahun">
+    <input id="kapasitasSilinder" placeholder="Silinder">
+    <input id="warnaKendaraan" placeholder="Warna">
+    <input id="bahanBakar" placeholder="Bahan Bakar">
 
     <button type="submit">Simpan</button>
 </form>
@@ -32,29 +36,28 @@
 const baseUrl = "https://kendaraan-backend-production.up.railway.app/api/kendaraan";
 const id = new URLSearchParams(window.location.search).get("id");
 
-// ❌ jika tidak ada id
-if (!id) {
-    alert("ID tidak ditemukan di URL");
+if(!id){
+    alert("ID tidak ditemukan");
     window.location.href = "index.html";
 }
 
-// ===================
 // LOAD DATA
-// ===================
-$.get(baseUrl + "/" + id, function(data){
+$.get(baseUrl + "/" + id, function(d){
 
-    $("#noRegistrasi").val(data.noRegistrasi);
-    $("#namaPemilik").val(data.namaPemilik);
-    $("#alamat").val(data.alamat);
-    $("#merkKendaraan").val(data.merkKendaraan);
+    $("#noRegistrasi").val(d.noRegistrasi);
+    $("#namaPemilik").val(d.namaPemilik);
+    $("#alamat").val(d.alamat);
+    $("#merkKendaraan").val(d.merkKendaraan);
+    $("#tahunPembuatan").val(d.tahunPembuatan);
+    $("#kapasitasSilinder").val(d.kapasitasSilinder);
+    $("#warnaKendaraan").val(d.warnaKendaraan);
+    $("#bahanBakar").val(d.bahanBakar);
 
 }).fail(function(){
     $("#status").html("<div class='error'>Gagal load data</div>");
 });
 
-// ===================
-// UPDATE DATA
-// ===================
+// UPDATE
 $("#formEdit").submit(function(e){
     e.preventDefault();
 
@@ -62,7 +65,11 @@ $("#formEdit").submit(function(e){
         noRegistrasi: $("#noRegistrasi").val(),
         namaPemilik: $("#namaPemilik").val(),
         alamat: $("#alamat").val(),
-        merkKendaraan: $("#merkKendaraan").val()
+        merkKendaraan: $("#merkKendaraan").val(),
+        tahunPembuatan: $("#tahunPembuatan").val(),
+        kapasitasSilinder: $("#kapasitasSilinder").val(),
+        warnaKendaraan: $("#warnaKendaraan").val(),
+        bahanBakar: $("#bahanBakar").val()
     };
 
     $.ajax({
