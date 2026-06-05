@@ -35,7 +35,7 @@
 
 const id = new URLSearchParams(window.location.search).get("id");
 
-$.get("http://localhost:8080/api/kendaraan/" + id, function(d){
+$.get("https://kendaraan-backend-production.up.railway.app/api/kendaraan" + id, function(d){
 
     $("#no").text(d.noRegistrasi);
     $("#nama").text(d.namaPemilik);
