@@ -16,13 +16,62 @@
 
 <form id="formTambah">
 
-<input id="noRegistrasi" class="form-control mb-2">
-<input id="namaPemilik" class="form-control mb-2">
-<input id="alamat" class="form-control mb-2">
-<input id="merkKendaraan" class="form-control mb-2">
-<input id="tahunPembuatan" class="form-control mb-2">
-<input id="kapasitasSilinder" class="form-control mb-2">
-<input id="warnaKendaraan" class="form-control mb-2">
+<div class="mb-2">
+<label>No Registrasi</label>
+<input type="text" id="noRegistrasi"
+class="form-control" required>
+</div>
+
+<div class="mb-2">
+<label>Nama Pemilik</label>
+<input type="text" id="namaPemilik"
+class="form-control" required>
+</div>
+
+<div class="mb-2">
+<label>Alamat</label>
+<textarea id="alamat"
+class="form-control"></textarea>
+</div>
+
+<div class="mb-2">
+<label>Merk Kendaraan</label>
+<input type="text" id="merkKendaraan"
+class="form-control">
+</div>
+
+<div class="mb-2">
+<label>Tahun Pembuatan</label>
+<input type="number"
+id="tahunPembuatan"
+class="form-control">
+</div>
+
+<div class="mb-2">
+<label>Kapasitas Silinder</label>
+<input type="number"
+id="kapasitasSilinder"
+class="form-control">
+</div>
+
+<div class="mb-2">
+<label>Warna Kendaraan</label>
+<input type="text"
+id="warnaKendaraan"
+class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Bahan Bakar</label>
+
+<select id="bahanBakar"
+class="form-control">
+
+<option>Bensin</option>
+<option>Solar</option>
+<option>Listrik</option>
+
+</select>
 
 <select id="bahanBakar" class="form-control mb-3">
     <option>Bensin</option>
